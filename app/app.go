@@ -54,13 +54,13 @@ func loginHandler(w http.ResponseWriter, req *http.Request) {
 	pass := req.FormValue("password")
 
 	if pass != "password" {
-		w.WriteHeader(403)
+		w.WriteHeader(http.StatusForbidden)
 		return
 	}
 
 	token, err := auth.GenerateToken(map[string]interface{}{"user": user})
 	if err != nil {
-		w.WriteHeader(500)
+		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
@@ -68,7 +68,7 @@ func loginHandler(w http.ResponseWriter, req *http.Request) {
 }
 
 func forbiddenHandler(w http.ResponseWriter, req *http.Request) {
-	w.WriteHeader(403)
+	w.WriteHeader(http.StatusForbidden)
 }
 
 func tokenValidated(claims map[string]interface{}, req *http.Request) {
